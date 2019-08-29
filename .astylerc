@@ -1,0 +1,7 @@
+--style=google
+-s2
+--pad-header
+--pad-oper
+--unpad-paren
+--align-pointer=name
+
