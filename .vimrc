@@ -48,3 +48,6 @@ nnoremap <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 "
 " Replace all is aliased to S.
 nnoremap S :%s//g<Left><Left>
+
+" Close all open files
+:nnoremap QQ :qa<CR>
