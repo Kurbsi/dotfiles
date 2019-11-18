@@ -8,6 +8,9 @@ set splitright
 set clipboard=unnamedplus
 set ruler
 
+" leader to ,
+let mapleader = ","
+
 " enable syntax and plugins
 syntax enable 
 filetype plugin on
@@ -27,11 +30,8 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" enable no highlighting to ctr + h
-" map <C-n> :nohl<cr>
-
-" leader to ,
-let mapleader = ","
+" toggle highlighting to leader + n
+:nnoremap <leader>n :set hlsearch! hlsearch?<CR>
 
 " disable K looking stuff up
 map K <Nop>
