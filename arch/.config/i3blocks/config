@@ -1,0 +1,46 @@
+# i3blocks config file
+#
+# Please see man i3blocks for a complete reference!
+# The man page is also hosted at http://vivien.github.io/i3blocks
+#
+# List of valid properties:
+#
+# align
+# color
+# command
+# full_text
+# instance
+# interval
+# label
+# min_width
+# name
+# separator
+# separator_block_width
+# short_text
+# signal
+# urgent
+
+# These are global properties, but can be overwritten inside a block
+separator_block_width=15
+markup=pango
+
+[weather]
+command=~/.config/i3blocks/blocklets/weather munich
+interval=30
+
+[disk-home]
+label= :
+# command=~/.config/i3blocks/blocklets/disk $HOME
+interval=30
+
+[internet]
+command=~/.config/i3blocks/blocklets/internet
+interval=10
+
+[battery]
+command=~/.config/i3blocks/blocklets/battery BAT0
+interval=30
+
+[datetime]
+command=~/.config/i3blocks/blocklets/clock
+interval=30
