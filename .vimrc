@@ -51,3 +51,6 @@ nnoremap S :%s//g<Left><Left>
 
 " Close all open files
 :nnoremap QQ :qa<CR>
+
+" Save current document
+:nnoremap WW :w<CR>
