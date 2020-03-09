@@ -25,12 +25,7 @@ separator_block_width=15
 markup=pango
 
 [weather]
-command=~/.config/i3blocks/blocklets/weather munich
-interval=30
-
-[disk-home]
-label= :
-# command=~/.config/i3blocks/blocklets/disk $HOME
+command=~/.config/i3blocks/blocklets/iconicWeather munich
 interval=30
 
 [internet]
@@ -38,7 +33,7 @@ command=~/.config/i3blocks/blocklets/internet
 interval=10
 
 [battery]
-command=~/.config/i3blocks/blocklets/battery BAT0
+command=~/.config/i3blocks/i3blocks-contrib/battery2/battery2 BAT0
 interval=30
 
 [datetime]
