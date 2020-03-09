@@ -11,8 +11,21 @@ set ruler
 " leader to ,
 let mapleader = ","
 
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin()
+" Initialize plugin system
+Plug 'pgavlin/pulumi.vim'
+call plug#end()
+
 " enable syntax and plugins
-syntax enable 
+syntax on
+colorscheme pulumi
+
 filetype plugin on
 
 " Provide tab-completion for all file-related tasks
@@ -53,4 +66,4 @@ nnoremap S :%s//g<Left><Left>
 :nnoremap QQ :qa<CR>
 
 " Save current document
-:nnoremap WW :w<CR>
+:nnoremap <leader>W :w<CR>
