@@ -212,6 +212,7 @@ assign [class="X-terminal-emulator"] $ws1
 assign [class="Firefox"] $ws2
 assign [class="Mattermost"] $ws3
 assign [class="Microsoft Teams - Preview"] $ws3
+assign [class="Code"] $ws4
 for_window [class="Spotify"] move to workspace $ws10
 
 # reload the configuration file
