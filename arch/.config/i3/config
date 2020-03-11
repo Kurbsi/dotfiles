@@ -288,4 +288,4 @@ bar {
     	}
 }
 
-exec --not-startup-id xautolock -time 10 -locker '$HOME/bin/lock.sh $HOME/.icons/lock.png' &
+exec --no-startup-id xautolock -time 10 -locker '$HOME/bin/lock.sh $HOME/.icons/lock.png' &
