@@ -212,6 +212,7 @@ assign [class="X-terminal-emulator"] $ws1
 assign [class="Firefox"] $ws2
 assign [class="Mattermost"] $ws3
 assign [class="Microsoft Teams - Preview"] $ws3
+for_window [title="Microsoft Teams Notification"] floating enable
 assign [class="Code"] $ws4
 for_window [class="Spotify"] move to workspace $ws10
 
@@ -234,7 +235,7 @@ mode "$mode_system" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
-bindsym $mod+Escape mode "$mode_system"
+bindsym $mod+Home mode "$mode_system"
 
 bindsym Mod4+l exec "$HOME/bin/lock.sh $HOME/.icons/lock.png && playerctl pause"
 
