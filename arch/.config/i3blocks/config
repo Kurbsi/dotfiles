@@ -21,7 +21,7 @@
 # urgent
 
 # These are global properties, but can be overwritten inside a block
-separator_block_width=15
+separator=false
 markup=pango
 
 [weather]
