@@ -7,7 +7,7 @@ showweather() { printf "<span color='#97bbf7'>%s" "$(sed '16q;d' "$HOME/.local/s
 sed '13q;d' "$HOME/.local/share/weatherreport" | grep -o "m\\(-\\)*[0-9]\\+" | sort -n -t 'm' -k 2n | sed -e 1b -e '$!d' | tr '\n|m' ' ' | awk '{print " ",$1 "°","",$2 "° </span>"}' ;}
 
 case $BLOCK_BUTTON in
-    1) $TERMINAL -e less -S "$HOME/.local/share/weatherreport" ;;
+    1) $TERMINAL -x 'zsh -c "less -rS $HOME/.local/share/weatherreport"' ;;
     2) getforecast && showweather ;;
     3) pgrep -x dunst >/dev/null && notify-send "Weather module" \
 "

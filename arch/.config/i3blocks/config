@@ -23,6 +23,7 @@
 # These are global properties, but can be overwritten inside a block
 separator=false
 markup=pango
+color=#97bbf7
 
 [weather]
 command=~/.config/i3blocks/blocklets/weather munich
