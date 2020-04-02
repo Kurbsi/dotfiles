@@ -10,6 +10,6 @@ case $BLOCK_BUTTON in
 	#2) $TERMINAL -e calcurse -D ~/.config/calcurse ;;
 	3) pgrep -x dunst >/dev/null && notify-send "Time/date module" \
 "
-- Show the month via \`cal\`
+- Show the month via <b>cal</b>
 - Middle click opens calcurse if installed" ;;
 esac
