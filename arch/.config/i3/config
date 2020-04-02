@@ -225,10 +225,14 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
 # mode for poweroff and reboot
-set $mode_system System (e) logout, (s) suspend, (h) hibernate, (r) reboot, (x) shutdown
+set $mode_system System (l) logout, (s) suspend, (h) hibernate, (r) reboot, (x) shutdown
 mode "$mode_system" {
         # exit i3 (logs you out of your X session)
-        bindsym e exec --no-startup-id i3-msg exit, mode "default"
+        bindsym l exec --no-startup-id i3-msg exit, mode "default"
+        # suspend
+        bindsym s exec --no-startup-id systemctl suspend, mode "default"
+        # hibernate
+        bindsym h exec --no-startup-id systemctl hibernate, mode "default"
         # reboot
         bindsym r exec --no-startup-id systemctl reboot, mode "default"
         # poweroff
@@ -240,7 +244,8 @@ mode "$mode_system" {
 }
 bindsym $mod+Home mode "$mode_system"
 
-bindsym Mod4+l exec "$HOME/.local/bin/lock.sh $HOME/.icons/lock.png && playerctl pause"
+set $locker "$HOME/.local/bin/lock.sh $HOME/.icons/lock.png && playerctl pause"
+bindsym Mod4+l exec --no-startup-id $locker
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
