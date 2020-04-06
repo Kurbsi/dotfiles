@@ -4,7 +4,21 @@ location="$1"; [ -z "$location" ] || { location="$location+" && rm -f "$HOME/.lo
 getforecast() { curl -s "wttr.in/$location" > "$HOME/.local/share/weatherreport" || exit 1 ;}
 
 showweather() { 
-  printf "<span color='#97bbf7'>%s" "$(sed '16q;d' "$HOME/.local/share/weatherreport" | grep -wo "[0-9]*%" | sort -n | sed -e '$!d' | sed -e "s/^/ /g" | tr -d '\n')"
+  rain=$(sed '16q;d' "$HOME/.local/share/weatherreport" | grep -wo "[0-9]*%" )
+
+  TIME=$(date "+%H")
+  if [ $TIME -lt 6 ]; then
+    y=$(echo $rain | awk '{print $1}' | sed -e "s/^/ /g" | tr -d '\n')
+  elif [ $TIME -lt 12 ]]; then
+    y=$(echo $rain | awk '{print $2}' | sed -e "s/^/ /g" | tr -d '\n')
+  elif [ $TIME -lt 18 ]]; then
+    y=$(echo $rain | awk '{print $3}' | sed -e "s/^/ /g" | tr -d '\n')
+  else
+    y=$(echo $rain | awk '{print $4}' | sed -e "s/^/ /g" | tr -d '\n')
+  fi
+
+  printf "<span color='#97bbf7'>%s" "$y"
+
   sed '13q;d' "$HOME/.local/share/weatherreport" | grep -o "m\\(-\\)*[0-9]\\+" | sort -n -t 'm' -k 2n | sed -e 1b -e '$!d' | tr '\n|m' ' ' | awk '{print " ",$1 "°","",$2 "°</span>"}' ;}
 
 case $BLOCK_BUTTON in
