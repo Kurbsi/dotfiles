@@ -270,7 +270,6 @@ mode "resize" {
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
         bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
 }
 
 bindsym $mod+r mode "resize"
@@ -304,3 +303,16 @@ bindsym Control+Shift+Print --release exec scrot -s $HOME/Pictures/screenshots/`
 
 exec --no-startup-id xautolock -time 10 -locker '$HOME/.local/bin/lock.sh $HOME/.icons/lock.png' &
 # exec --no-startup-id $HOME/.screenlayout/homeLayout.sh
+
+# switch between german and us keyboard
+set $keyboard_system US (u), DE (d)
+mode "$keyboard_system" {
+        bindsym u exec setxkbmap us, mode "default"
+        bindsym d exec setxkbmap de, mode "default"
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+bindsym $mod+Control+k mode "$keyboard_system"
+
