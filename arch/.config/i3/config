@@ -245,9 +245,6 @@ mode "$mode_system" {
 }
 bindsym $mod+Home mode "$mode_system"
 
-set $locker "$HOME/.local/bin/lock.sh $HOME/.icons/lock.png && playerctl pause"
-bindsym Mod4+l exec --no-startup-id $locker
-
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
@@ -271,8 +268,19 @@ mode "resize" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
-
 bindsym $mod+r mode "resize"
+
+# switch between german and us keyboard
+set $keyboard_system US (u), DE (d)
+mode "$keyboard_system" {
+        bindsym u exec setxkbmap us, mode "default"
+        bindsym d exec setxkbmap de, mode "default"
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+bindsym $mod+Control+k mode "$keyboard_system"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -297,22 +305,13 @@ bar {
     	}
 }
 
+set $locker '$HOME/.local/bin/lock.sh $HOME/.icons/lock.png && playerctl pause'
+bindsym Mod4+l exec --no-startup-id $locker
+exec --no-startup-id xautolock -time 10 -locker $locker & #-corners 000- -killtime 60 -killer 'systemctl suspend' &
+
 bindsym Print exec scrot $HOME/Pictures/screenshots/`date +%Y-%m-%d_%H:%M:%S`.png
 bindsym Control+Print exec scrot -u $HOME/Pictures/screenshots/`date +%Y-%m-%d_%H:%M:%S`.png
 bindsym Control+Shift+Print --release exec scrot -s $HOME/Pictures/screenshots/`date +%Y-%m-%d_%H:%M:%S`.png
 
-exec --no-startup-id xautolock -time 10 -locker '$HOME/.local/bin/lock.sh $HOME/.icons/lock.png' &
 # exec --no-startup-id $HOME/.screenlayout/homeLayout.sh
-
-# switch between german and us keyboard
-set $keyboard_system US (u), DE (d)
-mode "$keyboard_system" {
-        bindsym u exec setxkbmap us, mode "default"
-        bindsym d exec setxkbmap de, mode "default"
-
-        # back to normal: Enter or Escape or $mod+r
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-bindsym $mod+Control+k mode "$keyboard_system"
-
+exec --no-startup-id dunst
