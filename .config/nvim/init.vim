@@ -16,7 +16,8 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'vim-scripts/a.vim'
 
 " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } needs nvim > 0.3.0
 
@@ -40,6 +41,11 @@ set number relativenumber
 set title
 set path+=**
 set wildmenu
+set wildmode=longest,list,full
+set splitbelow splitright
+set colorcolumn=120
+
+let mapleader=","
 
 " NERDTree
 let NERDTreeShowHidden=1
@@ -56,10 +62,16 @@ let g:airline_section_warning = ''
 " Disable documentation window
 " set completeopt-=preview
 
-let mapleader=","
+" FZF
+nmap <C-t> :FZF<CR>
+
+" a.vim
+nmap <F4> :A<CR>
+nmap <leader>f :IH<CR>
 
 " toggle nerdtree
 nmap <C-n> :NERDTreeToggle<CR>
+
 
 " map switching between splitted window to ctrl + <hjkl>
 nnoremap <C-J> <C-W><C-J>
