@@ -25,21 +25,16 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'vim-scripts/a.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install() } }
+Plug 'rhysd/vim-clang-format'
 
 " Initialize plugin system
 call plug#end()
 
 syntax enable
 
-colorscheme onedark
-highlight Pmenu guibg=white guifg=black gui=bold
-highlight Comment gui=bold
-highlight Normal gui=none
-highlight NonText guibg=none
-
 " Other Configurations
 filetype plugin indent on
-set tabstop=2 softtabstop=2 shiftwidth=2 expandtab smarttab autoindent
+set tabstop=4 softtabstop=4 shiftwidth=4 expandtab smarttab autoindent
 set incsearch ignorecase smartcase nohlsearch
 set ruler laststatus=2 showcmd showmode
 set wrap breakindent
@@ -51,6 +46,17 @@ set wildmenu
 set wildmode=longest,list,full
 set splitbelow splitright
 set colorcolumn=120
+set termguicolors
+
+let g:equinusocio_material_darker=1
+
+" colorscheme onedark
+colorscheme dracula
+
+highlight Pmenu guibg=white guifg=black gui=bold
+highlight Comment gui=bold
+highlight Normal gui=none
+highlight NonText guibg=none
 
 let mapleader=","
 
@@ -63,17 +69,18 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 " toggle highlighting to leader + n
-nnoremap <leader>n :set hlsearch! hlsearch?<CR>
+" nnoremap <leader>n :set hlsearch! hlsearch?<CR>
 
 " Close all open files
 nnoremap QQ :qa<CR>
 
 " move between tabs 
-nnoremap <silent> th :tabfirst<CR>
-nnoremap <silent> tk :tabnext<CR>
-nnoremap <silent> tj :tabprev<CR>
-nnoremap <silent> tl :tablast<CR>
+nnoremap <silent> th :tabprev<CR>
+nnoremap <silent> tj :tabfirst<CR>
+nnoremap <silent> tk :tablast<CR>
+nnoremap <silent> tl :tabnext<CR>
 nnoremap <silent> tm :tabedit %<CR>
+nnoremap <silent> tn :tabnew<CR>
 
 " ********** PLUGINS **********
 
@@ -101,11 +108,23 @@ endfunction<Paste>
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
+" !! THIS CRASHES NVIM ON EVERY <CR> !!
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+" if exists('*complete_info')
+"   inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+" else
+"   imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" endif
+
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -119,18 +138,15 @@ function! s:show_documentation()
 endfunction
 
 " Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
+" autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
+" augroup mygroup
+"   autocmd!
+"   " Setup formatexpr specified filetype(s).
+"   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+"   " Update signature help on jump placeholder.
+"   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+" augroup end
 
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
@@ -147,6 +163,7 @@ let g:NERDTreeDirArrowExpandable = '↠'
 let g:NERDTreeDirArrowCollapsible = '↡'
 let g:NERDTreeWinSize = 50
 nmap <C-n> :NERDTreeToggle<CR>
+nmap <leader>n :NERDTreeFind<CR>
 
 " NERDCommenter
 let g:NERDSpaceDelims = 1 
@@ -166,3 +183,9 @@ nmap <leader>w :Ag <C-r><C-w><CR>
 nmap <F4> :A<CR>
 nmap <leader>f :IHV<CR>
 
+" fugitive
+nmap <leader>g :G<CR>
+nmap <leader>gc :G commit
+nmap <leader>gco :G checkout 
+nmap <leader>gp :G push<CR>
+nmap <leader>gpu :G pull<CR>
