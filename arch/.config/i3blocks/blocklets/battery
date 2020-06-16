@@ -27,6 +27,6 @@ fi
 
 [ -z $warn ] && warn=" "
 
-[ "$status" = "Charging" ] && color="#ffffff"
+[ "$status" = "Charging" ] && color="#97bbf7"
 
 printf "<span color='%s'>%s%s%s</span>\n" "$color" "$(echo "$status" | sed -e "s/,//;s/Discharging//;s/Not charging//;s/Charging//;s/Unknown//;s/Full//;s/ 0*/ /g;s/ :/ /g")" "$warn" "$(echo "$capacity" | sed -e 's/$/%/')"

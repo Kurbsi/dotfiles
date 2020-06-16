@@ -6,7 +6,7 @@ printf "<span color='#97bbf7'> %s</span>\n" "$date"
 
 case $BLOCK_BUTTON in
 	#1) pgrep -x dunst >/dev/null && notify-send "This Month" "$(cal | sed "s/..7m/<b><span color=\"red\">/;s/..27m/<\/span><\/b>/")" && notify-send "Appointments" "$(calcurse -D ~/.config/calcurse -d3)" ;;
-  1) pgrep -x dunst >/dev/null && notify-send "This Month" "$(ncal -bh)" ;;
+  1) pgrep -x dunst >/dev/null && notify-send "This Month" "$(ncal -b -M -h)" ;;
 	#2) $TERMINAL -e calcurse -D ~/.config/calcurse ;;
 	3) pgrep -x dunst >/dev/null && notify-send "Time/date module" \
 "

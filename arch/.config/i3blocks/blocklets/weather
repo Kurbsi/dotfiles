@@ -19,6 +19,10 @@ showweather() {
 
   printf "<span color='#97bbf7'>%s" "$y"
 
+  currentTemp=$(sed '4q;d' "$HOME/.local/share/weatherreport" | grep -o "m\\(-\\)*[0-9]")
+  #echo $currentTemp
+  #echo $var
+
   sed '13q;d' "$HOME/.local/share/weatherreport" | grep -o "m\\(-\\)*[0-9]\\+" | sort -n -t 'm' -k 2n | sed -e 1b -e '$!d' | tr '\n|m' ' ' | awk '{print " ",$1 "°","",$2 "°</span>"}' ;}
 
 case $BLOCK_BUTTON in

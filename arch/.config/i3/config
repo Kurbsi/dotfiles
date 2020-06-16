@@ -11,37 +11,21 @@
 
 set $mod Mod1
 
-# pretty black
 set $base00 #101218	
-# light black
 set $base01 #1f222d	
-# purple-ish
 set $base02 #252936	
-# grey-blue
 set $base03 #5f6680	
-# light grey-blue
 set $base04 #C0C5CE	
-# light blue
 set $base05 #d1d4e0	
-# light blue
 set $base06 #C9CCDB	
-# white
 set $base07 #ffffff	
-# pink
 set $base08 #ee829f
-# salmon
 set $base09 #f99170
-# beige
 set $base0A #ffefcc
-# light green
 set $base0B #a5ffe1
-# blue
 set $base0C #97e0ff
-# dark blue
 set $base0D #97bbf7
-# blue with pink
 set $base0E #c0b7f9
-# light brown
 set $base0F #fcc09e	
 
 # Window Colours
@@ -311,7 +295,7 @@ exec --no-startup-id xautolock -time 10 -locker $locker & #-corners 000- -killti
 
 bindsym Print exec scrot $HOME/Pictures/screenshots/`date +%Y-%m-%d_%H:%M:%S`.png
 bindsym Control+Print exec scrot -u $HOME/Pictures/screenshots/`date +%Y-%m-%d_%H:%M:%S`.png
-bindsym Control+Shift+Print --release exec scrot -s $HOME/Pictures/screenshots/`date +%Y-%m-%d_%H:%M:%S`.png
+bindsym $mod+Control+Print --release exec scrot -s $HOME/Pictures/screenshots/`date +%Y-%m-%d_%H:%M:%S`.png
 
 # exec --no-startup-id $HOME/.screenlayout/homeLayout.sh
 exec --no-startup-id dunst
