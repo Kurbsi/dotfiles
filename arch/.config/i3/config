@@ -291,11 +291,12 @@ bar {
 
 set $locker "$HOME/.local/bin/lock.sh $HOME/.icons/lock.png && playerctl pause"
 bindsym Mod4+l exec --no-startup-id $locker
-exec --no-startup-id xautolock -time 10 -locker $locker & #-corners 000- -killtime 60 -killer 'systemctl suspend' &
+# exec --no-startup-id xautolock -time 10 -locker $locker & #-corners 000- -killtime 60 -killer 'systemctl suspend' &
 
 bindsym Print exec scrot $HOME/Pictures/screenshots/`date +%Y-%m-%d_%H:%M:%S`.png
 bindsym Control+Print exec scrot -u $HOME/Pictures/screenshots/`date +%Y-%m-%d_%H:%M:%S`.png
 bindsym $mod+Control+Print --release exec scrot -s $HOME/Pictures/screenshots/`date +%Y-%m-%d_%H:%M:%S`.png
 
-# exec --no-startup-id $HOME/.screenlayout/homeLayout.sh
+bindsym $mod+Control+d exec autorandr --change
+
 exec --no-startup-id dunst
