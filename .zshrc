@@ -53,7 +53,7 @@ bindkey -M menuselect '^M' .accept-line
 if [ -f "/etc/bmwrpp-bootstrap/zshrc" ]; then
   . "/etc/bmwrpp-bootstrap/zshrc"
 else
-  echo "bmwrpp-bootstrap not installed, please remove BMWRPP section from /home/hirschmuelle/.zshrc"
+  echo "bmwrpp-bootstrap not installed, please remove BMWRPP section from /home/qxz0sxz/.zshrc"
 fi
 ###  BMWRPP-END  ###
 
@@ -83,3 +83,7 @@ unset __conda_setup
 
 export ROS_HOSTNAME=localhost
 export ROS_MASTER_URL=http://localhost:11311
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
