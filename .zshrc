@@ -41,6 +41,8 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 alias v=$EDITOR
+alias us='setxkbmap us'
+alias de='setxkbmap de'
 
 ###  ACCEPT FROM MENU IMMEDIATLY  ###
 bindkey -M menuselect '^M' .accept-line

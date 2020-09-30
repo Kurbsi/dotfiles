@@ -26,6 +26,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'vim-scripts/a.vim'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " Initialize plugin system
 call plug#end()
