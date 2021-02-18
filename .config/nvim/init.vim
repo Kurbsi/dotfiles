@@ -89,22 +89,26 @@ function TrimWhiteSpace()
 endfunction
 autocmd BufWritePre * :call TrimWhiteSpace()
 
-function WriteTicketNote()
+function! WriteTicketNote()
     " get current branch
     let l:git_branch = system("git branch --show-current")
-
-    let l:ticket = split(l:git_branch, "_")[1]
+    echom l:git_branch
+    if stridx(l:git_branch, "master") >= 0
+        let l:ticket = "master"
+    else
+        let l:ticket = split(l:git_branch, "_")[1]
+    endif
 
     let l:fname = expand('~/notes/') . l:ticket . '.md'
-    echo l:fname
 
     " edit the new file
     exec "e " . l:fname
 
     " enter the title and timestamp in the new file
-    exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<esc>G"
+    " exec normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>\<esc>
+    exec "normal! ggO"
 endfunction
-command! -nargs=* Note call WriteTicketNode()
+command! -nargs=* Note call WriteTicketNote()
 
 " ********** CUSTOMS **********
 
@@ -118,7 +122,7 @@ nnoremap <C-h> <C-w><C-h>
 nnoremap <leader>h :set hlsearch! hlsearch?<CR>
 
 " Close all open files
-nnoremap QQ :qa<CR>
+nnoremap QQ :qa!<CR>
 
 " move between tabs
 nnoremap <silent> th :tabprev<CR>
