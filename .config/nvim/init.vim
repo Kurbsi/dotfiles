@@ -34,6 +34,7 @@ Plug 'ap/vim-css-color'
 Plug 'vim-scripts/a.vim'
 
 Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python'}
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 Plug '~/Projects/vim_notes'
 
@@ -76,7 +77,7 @@ colorscheme atom-dark-256
 function FormatBuffer()
   if &modified && !empty(findfile('.clang-format', expand('%:p:h') . ';'))
     let cursor_pos = getpos('.')
-    :%!clang-format-11
+    :%! clang-format-11 -style=file -fallback-style=none
     call setpos('.', cursor_pos)
   endif
 endfunction
@@ -287,6 +288,9 @@ let g:airline_powerline_fonts = 1
 let g:airline_section_z = ' %{strftime("%-I:%M %p")}'
 let g:airline_section_warning = ''
 
+" AirlineTheme
+let g:airline_theme='molokai'
+
 " FZF
 nnoremap <C-p> :FZF<CR>
 nnoremap <leader>w :Rg <C-r><C-w><CR>
@@ -320,7 +324,7 @@ nnoremap <leader>gd :G diff<CR>
 
 " rhubarb
 let g:github_enterprise_urls = ['https://cc-github.bmwgroup.net']
-nnoremap <leader>gb :Gbrowse
+nnoremap <leader>gb :Git browse
 
 " vim-cpp-modern
 let g:cpp_class_scope_highlight = 1
