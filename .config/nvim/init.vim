@@ -58,6 +58,7 @@ set wildmenu
 set wildmode=longest,list,full
 set splitbelow splitright
 set colorcolumn=120
+set cursorline
 " set termguicolors
 set hidden
 set noerrorbells
@@ -159,7 +160,7 @@ endfunction
 nnoremap <silent> <leader>/ :call OpenTerminal()<cr>
 
 nnoremap <silent> <leader>. :call nvim_open_win(bufnr('%'), v:true, {'relative': 'editor', 'anchor': 'SW', 'width': winwidth(0), 'height': 2*winheight(0)/5, 'row': 1, 'col': 0})<cr>:call TerminalToggle()<cr>
-tnoremap <silent> <leader>. <c-\><c-n>:call TerminalToggle()<cr>:q<cr>
+tnoremap <c-\><c-n>:call TerminalToggle()<cr>:q<cr>
 
 function! TerminalCreate() abort
   if !has('nvim')
@@ -294,7 +295,7 @@ let g:airline_theme='molokai'
 " FZF
 nnoremap <C-p> :FZF<CR>
 nnoremap <leader>w :Rg <C-r><C-w><CR>
-nnoremap ; :Buffers<CR>
+nnoremap <leader><space> :Buffers<CR>
 let g:fzf_colors =
 \ { "fg":      ["fg", "Normal"],
   \ "bg":      ["bg", "Normal"],
