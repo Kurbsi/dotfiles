@@ -1,12 +1,24 @@
-# This file contains all the custom aliases for zsh
+alias -g ..='cd ..'
+alias -g ...='cd ../..'
+alias -g ....='cd ../../..'
+alias -- -="cd -"
 
-alias open='xdg-open'
-alias sn='shutdown -h now'
-alias ll='ls -alF'
-alias lk='ls -lF'
-alias serial0='screen /dev/ttyUSB0 115200'
-alias serial1='screen /dev/ttyUSB1 115200'
-alias weather='curl wttr.in/munich'
-alias lo='libreoffice'
+alias ls='ls --color=auto'
+alias ll='ls -alh'
+
+alias v=$EDITOR
+
+alias us='setxkbmap us'
+alias de='setxkbmap de'
+
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gd='git diff'
+alias gco='git checkout'
+alias gst='git status'
+alias gb='git branch'
+
 alias pi="ssh pi@192.168.178.22"
 
+alias weather='curl wttr.in/munich'

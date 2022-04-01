@@ -5,8 +5,6 @@ if ! filereadable(expand('~/.config/nvim/autoload/plug.vim'))
 	autocmd VimEnter * PlugInstall
 endif
 
-let g:vimspector_enable_mappings = 'HUMAN'
-
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'
@@ -28,15 +26,17 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'ap/vim-css-color'
 Plug 'vim-scripts/a.vim'
 
-Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python'}
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
-Plug '~/Projects/vim_notes'
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip'
 
 " Initialize plugin system
 call plug#end()
@@ -53,7 +53,6 @@ set encoding=utf-8
 set number relativenumber
 set title
 set path+=**
-set path+=$HOME/ddad
 set wildmenu
 set wildmode=longest,list,full
 set splitbelow splitright
@@ -69,6 +68,8 @@ set cmdheight=2
 set updatetime=300
 set shortmess+=c
 set signcolumn=yes
+set clipboard+=unnamedplus
+set completeopt=menu,menuone,noselect
 
 let mapleader=","
 let g:equinusocio_material_darker=1
@@ -91,28 +92,9 @@ function TrimWhiteSpace()
 endfunction
 autocmd BufWritePre * :call TrimWhiteSpace()
 
-function! WriteTicketNote()
-    " get current branch
-    let l:git_branch = system("git branch --show-current")
-    echom l:git_branch
-    if stridx(l:git_branch, "master") >= 0
-        let l:ticket = "master"
-    else
-        let l:ticket = split(l:git_branch, "_")[1]
-    endif
-
-    let l:fname = expand('~/notes/') . l:ticket . '.md'
-
-    " edit the new file
-    exec "e " . l:fname
-
-    " enter the title and timestamp in the new file
-    " exec normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>\<esc>
-    exec "normal! ggO"
-endfunction
-command! -nargs=* Note call WriteTicketNote()
-
 " ********** CUSTOMS **********
+" Replace all
+nnoremap S :%s//g<Left><Left>
 
 " map switching between splitted window to ctrl + <hjkl>
 nnoremap <C-j> <C-w><C-j>
@@ -135,137 +117,21 @@ nnoremap <silent> tm :tabedit %<CR>
 nnoremap <silent> tn :tabnew<CR>
 
 " terminal control
-" pop-up, non-persistent terminal {{{
 
+" exit insert mode in terminal
 tnoremap <Esc> <C-\><C-n>
-
-" move between panels while in terminal mode
-" tnoremap <c-j> <c-\><c-n><c-w>j
-" tnoremap <c-k> <c-\><c-n><c-w>k
-" tnoremap <c-l> <c-\><c-n><c-w>l
-" tnoremap <c-h> <c-\><c-n><c-w>h
-
-" <c-n> will also close ternimal
-" tnoremap <silent> <leader>/ :q<cr>
 
 " start terminal in insert mode
 autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
 
-" open terminal on <c-n>
+" open terminal
 function! OpenTerminal()
-  split term://zsh
-  resize 10
+  tabnew term://zsh
 endfunction
 
 nnoremap <silent> <leader>/ :call OpenTerminal()<cr>
 
-nnoremap <silent> <leader>. :call nvim_open_win(bufnr('%'), v:true, {'relative': 'editor', 'anchor': 'SW', 'width': winwidth(0), 'height': 2*winheight(0)/5, 'row': 1, 'col': 0})<cr>:call TerminalToggle()<cr>
-tnoremap <c-\><c-n>:call TerminalToggle()<cr>:q<cr>
-
-function! TerminalCreate() abort
-  if !has('nvim')
-    return v:false
-  endif
-
-  if !exists('g:terminal')
-    let g:terminal = {
-          \ 'opts': {},
-          \ 'term': {
-          \ 'loaded': v:null,
-          \ 'bufferid': v:null
-          \ },
-          \ 'origin': {
-          \ 'bufferid': v:null
-          \ }
-          \ }
-
-    function! g:terminal.opts.on_exit(jobid, data, event) abort
-      silent execute 'buffer' g:terminal.origin.bufferid
-      silent execute 'bdelete!' g:terminal.term.bufferid
-
-      let g:terminal.term.loaded = v:null
-      let g:terminal.term.bufferid = v:null
-      let g:terminal.origin.bufferid = v:null
-    endfunction
-  endif
-
-  if g:terminal.term.loaded
-    return v:false
-  endif
-
-  let g:terminal.origin.bufferid = bufnr('')
-
-  enew
-  call termopen(&shell, g:terminal.opts)
-
-  let g:terminal.term.loaded = v:true
-  let g:terminal.term.bufferid = bufnr('')
-  startinsert
-endfunction
-
-function! TerminalToggle()
-  if !has('nvim')
-    return v:false
-  endif
-
-  " Create the terminal buffer.
-  if !exists('g:terminal') || !g:terminal.term.loaded
-    return TerminalCreate()
-  endif
-
-  " Go back to origin buffer if current buffer is terminal.
-  if g:terminal.term.bufferid ==# bufnr('')
-    silent execute 'buffer' g:terminal.origin.bufferid
-
-    " Launch terminal buffer and start insert mode.
-  else
-    let g:terminal.origin.bufferid = bufnr('')
-
-    silent execute 'buffer' g:terminal.term.bufferid
-    startinsert
-  endif
-endfunction
-
 " ********** PLUGINS **********
-
-" coc.nvim
-
-" Use tab for trigger completion with characters ahead and navigate.
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window.
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " vim-polyglot
 let g:cpp_class_scope_highlight = 1
@@ -324,17 +190,122 @@ nnoremap <leader>gpu :G pull<CR>
 nnoremap <leader>gd :G diff<CR>
 
 " rhubarb
-let g:github_enterprise_urls = ['https://cc-github.bmwgroup.net']
-nnoremap <leader>gb :Git browse
+let g:github_enterprise_urls = ['https://git.tttech.com']
+nnoremap <leader>gb :GBrowse
 
 " vim-cpp-modern
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
 
+lua << EOF
+-- Mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap=true, silent=true }
+vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
 
+-- Add additional capabilities supported by nvim-cmp
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+local lspconfig = require('lspconfig')
+local servers = { 'pyright', 'bashls', 'ccls' }
+for _, lsp in pairs(servers) do
+  lspconfig[lsp].setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    flags = {
+      -- This will be the default in neovim 0.7+
+      debounce_text_changes = 150,
+    }
+  }
+end
 
+require'lspconfig'.ccls.setup {
+  on_attach = on_attach,
+  filetype = { "c", "cpp", "objc", "objcpp", "h", "cu" },
+  init_options = {
+    compilationDatabaseDirectory = "build";
+    index = {
+      threads = 0;
+    };
+    clang = {
+      excludeArgs = { "-frounding-math"} ;
+    };
+  }
+}
 
+-- luasnip setup
+local luasnip = require 'luasnip'
+
+-- nvim-cmp setup
+local cmp = require 'cmp'
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end,
+    ['<S-Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end,
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  },
+}
+EOF

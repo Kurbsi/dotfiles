@@ -1,11 +1,14 @@
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=1000000000
+SAVEHIST=1000000000
 setopt autocd extendedglob
+setopt histignoredups
 bindkey -v
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
+
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
 zstyle :compinstall filename '/home/hirschmuelle/.zshrc'
 
 autoload -Uz compinit
@@ -14,11 +17,12 @@ compinit
 
 fpath=($fpath "/home/hirschmuelle/.zfunctions")
 
-# Set typewritten ZSH as a prompt
+# TYPEWRITTEN
 export TYPEWRITTEN_CURSOR="block"
 export TYPEWRITTEN_RELATIVE_PATH="adaptive"
 export TYPEWRITTEN_SYMBOL=""
 
+fpath+=$HOME/.zsh/typewritten
 autoload -U promptinit; promptinit
 prompt typewritten
 
@@ -31,15 +35,6 @@ export FZF_DEFAULT_OPTS="--ansi --color=dark --no-bold"
 
 export EDITOR='nvim'
 
-alias ls='ls --color=auto'
-alias ll='ls -al'
-alias v=$EDITOR
-alias us='setxkbmap us'
-alias de='setxkbmap de'
-alias ga='git add'
-alias gc='git commit'
-alias gp='git push'
-alias gd='git diff'
-alias gco='git checkout'
-alias gst='git status'
-
+if [ -f ~/.zsh/aliases/aliases.zsh ]; then
+	. ~/.zsh/aliases/aliases.zsh
+fi
