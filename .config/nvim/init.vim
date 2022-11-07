@@ -17,7 +17,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'gosukiwi/vim-atom-dark', { 'as': 'atomdark' }
 
 Plug 'sheerun/vim-polyglot'
-Plug 'scrooloose/nerdtree'
+
 Plug 'preservim/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
@@ -37,6 +37,9 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'L3MON4D3/LuaSnip'
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+
 
 " Initialize plugin system
 call plug#end()
@@ -58,13 +61,13 @@ set wildmode=longest,list,full
 set splitbelow splitright
 set colorcolumn=120
 set cursorline
-" set termguicolors
+set termguicolors
 set hidden
 set noerrorbells
 set nowrap
 set nobackup
 set nowritebackup
-set cmdheight=2
+" set cmdheight=2
 set updatetime=300
 set shortmess+=c
 set signcolumn=yes
@@ -137,13 +140,10 @@ nnoremap <silent> <leader>/ :call OpenTerminal()<cr>
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 
-" NERDTree
-let NERDTreeShowHidden = 1
-let g:NERDTreeDirArrowExpandable = '↠'
-let g:NERDTreeDirArrowCollapsible = '↡'
-let g:NERDTreeWinSize = 50
-nnoremap <C-n> :NERDTreeToggle<CR>
-nnoremap <leader>n :NERDTreeFind<CR>
+" nvrim-tree.lua
+nnoremap <C-n> :NvimTreeToggle<CR>
+nnoremap <leader>r :NvimTreeRefresh<CR>
+nnoremap <leader>n :NvimTreeFindFile<CR>
 
 " NERDCommenter
 let g:NERDSpaceDelims = 1
@@ -152,11 +152,11 @@ let g:NERDCommentEmptyLines = 1
 
 " Airline
 let g:airline_powerline_fonts = 1
-let g:airline_section_z = ' %{strftime("%-I:%M %p")}'
+" let g:airline_section_z = ' %{strftime("%-I:%M %p")}'
 let g:airline_section_warning = ''
 
 " AirlineTheme
-let g:airline_theme='molokai'
+let g:airline_theme='simple'
 
 " FZF
 nnoremap <C-p> :FZF<CR>
@@ -248,9 +248,9 @@ for _, lsp in pairs(servers) do
   }
 end
 
-require'lspconfig'.ccls.setup {
+lspconfig.ccls.setup {
   on_attach = on_attach,
-  filetype = { "c", "cpp", "objc", "objcpp", "h", "cu" },
+  filetype = { "c", "cpp", "objc", "objcpp", "h", "cu", "hpp" },
   init_options = {
     compilationDatabaseDirectory = "build";
     index = {
@@ -307,5 +307,11 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
   },
+}
+
+require'nvim-tree'.setup {
+    view = {
+        width = 50
+    }
 }
 EOF
