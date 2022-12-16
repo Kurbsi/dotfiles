@@ -140,10 +140,10 @@ nnoremap <silent> <leader>/ :call OpenTerminal()<cr>
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 
-" nvrim-tree.lua
+" nvim-tree.lua
 nnoremap <C-n> :NvimTreeToggle<CR>
-nnoremap <leader>r :NvimTreeRefresh<CR>
-nnoremap <leader>n :NvimTreeFindFile<CR>
+nnoremap <leader>nr :NvimTreeRefresh<CR>
+nnoremap <leader>nf :NvimTreeFindFile<CR>
 
 " NERDCommenter
 let g:NERDSpaceDelims = 1
@@ -161,7 +161,7 @@ let g:airline_theme='simple'
 " FZF
 nnoremap <C-p> :FZF<CR>
 nnoremap <leader>w :Rg <C-r><C-w><CR>
-nnoremap <leader><space> :Buffers<CR>
+nnoremap <leader><leader> :Buffers<CR>
 let g:fzf_colors =
 \ { "fg":      ["fg", "Normal"],
   \ "bg":      ["bg", "Normal"],
@@ -183,15 +183,18 @@ nnoremap <leader>f :IHV<CR>
 
 " fugitive
 nnoremap <leader>g :G<CR>
-nnoremap <leader>gc :G commit
-nnoremap <leader>gco :G checkout
-nnoremap <leader>gp :G push<CR>
+nnoremap <leader>gco :G checkout<Space>
+nnoremap <leader>gp :G push<Space>
 nnoremap <leader>gpu :G pull<CR>
 nnoremap <leader>gd :G diff<CR>
+" nnoremap <leader>gb :G branch<CR>
+nnoremap <leader>gs :G stash<CR>
+nnoremap <leader>gb :G blame<CR>
+vnoremap <leader>gb :G blame<CR>
 
 " rhubarb
 let g:github_enterprise_urls = ['https://git.tttech.com']
-nnoremap <leader>gb :GBrowse
+nnoremap <leader>gg :GBrowse<CR>
 
 " vim-cpp-modern
 let g:cpp_class_scope_highlight = 1
