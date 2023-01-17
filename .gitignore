@@ -1,2 +1,3 @@
 .config/nvim/autoload/
 .config/nvim/plugged/
+.config/nvim_lua/plugin/packer_compiled.lua

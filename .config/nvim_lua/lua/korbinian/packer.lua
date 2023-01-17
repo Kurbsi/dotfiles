@@ -10,19 +10,19 @@ return require('packer').startup(function(use)
     use({
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons', opt = true },
-        event = 'ColorScheme',
     })
     use({
         'nvim-telescope/telescope.nvim', tag = '0.1.0',
         requires = { {'nvim-lua/plenary.nvim'} }
     })
+    use('nvim-tree/nvim-tree.lua')
     use({
-        'nvim-tree/nvim-tree.lua',
-        requires = {
-            'nvim-tree/nvim-web-devicons',
-        },
+        'nvim-treesitter/nvim-treesitter',
+        run = function()
+            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+            ts_update()
+        end,
     })
-    use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
     use('preservim/nerdcommenter')
     use('tpope/vim-fugitive')
     use('tpope/vim-surround')
@@ -48,14 +48,14 @@ return require('packer').startup(function(use)
     use({
         'rose-pine/neovim',
         as = 'rose-pine',
-        config = function()
-            vim.cmd('colorscheme rose-pine')
-        end
+        -- config = function()
+        --     vim.cmd('colorscheme rose-pine')
+        -- end
     })
     use({
         'EdenEast/nightfox.nvim',
-        -- config = function()
-        --     vim.cmd('colorscheme duskfox')
-        -- end
+        config = function()
+            vim.cmd('colorscheme duskfox')
+        end
     })
 end)
