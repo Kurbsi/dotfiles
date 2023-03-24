@@ -23,6 +23,9 @@ autocmd("BufWinEnter", {
         vim.keymap.set("n", "<leader>p", function()
             vim.cmd.Git('push')
         end, opts)
+        vim.keymap.set("n", "<leader>pf", function()
+            vim.cmd.Git('push -f')
+        end, opts)
         
         -- rebase always
         vim.keymap.set("n", "<leader>P", function()

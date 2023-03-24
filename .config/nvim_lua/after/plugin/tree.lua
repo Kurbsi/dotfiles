@@ -10,4 +10,4 @@ require("nvim-tree").setup({
 })
 
 vim.keymap.set("n", "<leader>n", ":NvimTreeFindFile<CR>")
-vim.keymap.set("n", "<leader>tt", ":NvimTreeToggle<CR>")
+vim.keymap.set("n", "<leader>nq", ":NvimTreeClose<CR>")

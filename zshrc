@@ -38,3 +38,10 @@ export EDITOR='nvim'
 if [ -f ~/.zsh/aliases/aliases.zsh ]; then
 	. ~/.zsh/aliases/aliases.zsh
 fi
+
+if [ -d ~/.pyenv ]; then
+    export PATH="$HOME/.pyenv/bin:$PATH"
+    eval "$(pyenv init --path)"
+    eval "$(pyenv virtualenv-init -)"
+    eval "$(pyenv init -)"
+fi
