@@ -12,8 +12,11 @@ return require('packer').startup(function(use)
         requires = { 'kyazdani42/nvim-web-devicons', opt = true },
     })
     use({
-        'nvim-telescope/telescope.nvim', tag = '0.1.0',
-        requires = { {'nvim-lua/plenary.nvim'} }
+        'nvim-telescope/telescope.nvim', tag = '0.1.5',
+        requires = {
+            {'nvim-lua/plenary.nvim'},
+            {'BurntSushi/ripgrep'},
+        }
     })
     use('nvim-tree/nvim-tree.lua')
     use({
@@ -54,8 +57,14 @@ return require('packer').startup(function(use)
     })
     use({
         'EdenEast/nightfox.nvim',
+        -- config = function()
+        --     vim.cmd('colorscheme duskfox')
+        -- end
+    })
+    use({
+        'marko-cerovac/material.nvim',
         config = function()
-            vim.cmd('colorscheme duskfox')
+            vim.cmd('colorscheme material')
         end
     })
 end)

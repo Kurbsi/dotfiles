@@ -40,3 +40,6 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 
 vim.opt.cursorline = true
+
+--Lua:
+vim.g.material_style = "palenight"
