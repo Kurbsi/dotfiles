@@ -1,5 +1,5 @@
-vim.g.mapleader = ","
--- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)  -- Diable since nvim tree is used
+vim.g.mapleader = " "
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex) 
 
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { noremap = true })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { noremap = true })

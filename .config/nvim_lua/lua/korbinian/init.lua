@@ -1,6 +1,7 @@
-require("korbinian.packer")
+-- require("korbinian.packer")
 require("korbinian.remap")
 require("korbinian.set")
+require("korbinian.lazy_init")
 
 local function isSoaDirectory()
     local target_directory = "/home/hirschmuelle/dev/soa-com-middleware"

@@ -1,2 +1,3 @@
-lua/
-!lua/korbinian
+lazy-lock.json
+lua/.luarc.json
+lua/after
