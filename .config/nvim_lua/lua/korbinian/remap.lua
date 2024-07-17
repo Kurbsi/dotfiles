@@ -1,5 +1,5 @@
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex) 
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { noremap = true })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { noremap = true })
@@ -20,6 +20,7 @@ vim.keymap.set("x", "<leader>p", "\"_dP")
 vim.keymap.set("n", "<leader>y", "\"+y")
 vim.keymap.set("v", "<leader>y", "\"+y")
 vim.keymap.set("n", "<leader>Y", "\"+Y")
+vim.keymap.set("n", "<leader>yc", ":let @+=expand('%:p')<CR>") -- yank current buffer to clipboard 
 
 vim.keymap.set("n", "<M-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<M-j>", "<cmd>cprev<CR>zz")

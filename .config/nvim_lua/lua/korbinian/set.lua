@@ -45,3 +45,6 @@ vim.opt.clipboard = "unnamedplus"
 
 --Lua:
 vim.g.material_style = "palenight"
+
+--netrw
+vim.g.netrw_banner = 0
