@@ -1,12 +1,12 @@
-alias -g ..='cd ..'
-alias -g ...='cd ../..'
-alias -g ....='cd ../../..'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 alias -- -="cd -"
 
 alias ls='ls --color=auto'
 alias ll='ls -alh'
 
-alias v=$EDITOR
+alias v='nvim'
 
 alias us='setxkbmap us'
 alias de='setxkbmap de'
@@ -20,9 +20,8 @@ alias gst='git status'
 alias gb='git branch'
 alias glol="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
-alias pi="ssh pi@192.168.178.22"
-
 alias weather='curl wttr.in/munich'
 
 alias xclip='xclip -sel c'
 
+alias soa='cd $HOME/dev/soa-com-middleware'

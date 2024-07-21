@@ -4,22 +4,23 @@ return {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
         "j-hui/fidget.nvim",
+        "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
         require("fidget").setup()
         require("mason").setup()
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "clangd",
                 "lua_ls",
+                "pylsp",
             },
             handlers = {
-                function (server_name)
-                    require("lspconfig")[server_name].setup {}
-                end,
-
-                ["clangd"] = function ()
+                ["clangd"] = function()
                     require("lspconfig").clangd.setup {
+                        capabilities = capabilities,
                         cmd = {
                             'cclangd',
                             'soa-com-middleware-motionwise-lean-1',
@@ -27,13 +28,28 @@ return {
                     }
                 end,
 
-                ["lua_ls"] = function ()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.lua_ls.setup {
+                ["lua_ls"] = function()
+                    require("lspconfig").lua_ls.setup {
+                        capabilities = capabilities,
                         settings = {
                             Lua = {
                                 diagnostics = {
                                     globals = { "vim" }
+                                }
+                            }
+                        }
+                    }
+                end,
+
+                ["pylsp"] = function()
+                    require("lspconfig").pylsp.setup {
+                        capabilities = capabilities,
+                        settings = {
+                            pylsp = {
+                                plugins = {
+                                    pycodestyle = {
+                                        maxLineLength = 120
+                                    }
                                 }
                             }
                         }
