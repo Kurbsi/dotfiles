@@ -48,6 +48,3 @@ vim.g.material_style = "palenight"
 
 --netrw
 vim.g.netrw_banner = 0
-
---vim-tpipeline
-vim.g.tpipeline_autoembed = 0
