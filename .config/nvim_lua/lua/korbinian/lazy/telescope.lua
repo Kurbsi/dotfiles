@@ -1,6 +1,25 @@
 return {
     'nvim-telescope/telescope.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    dependencies = {
+        'nvim-lua/plenary.nvim',
+        'BurntSushi/ripgrep',
+        {
+            'nvim-telescope/telescope-fzf-native.nvim',
+            build = 'make'
+        },
+    },
+    config = function()
+        require('telescope').setup {
+            defaults = {
+                path_display = { shorten = { len = 3 } },
+            },
+            extensions = {
+                fzf = {}
+            }
+        }
+
+        require('telescope').load_extension('fzf')
+    end,
     keys = {
         { '<leader>ff', require('telescope.builtin').find_files,  desc = "Find all files" },
         { '<C-p>',      require('telescope.builtin').git_files,   desc = 'Find all files in git' },
@@ -16,6 +35,6 @@ return {
             desc = 'Find word'
         },
         { '<leader>fgc', require('telescope.builtin').git_commits,  desc = 'Find all git commits' },
-        { '<leader>fgb', require('telescope.builtin').git_branches, desc = 'find all git branches' },
+        { '<leader>fgb', require('telescope.builtin').git_branches, desc = 'Find all git branches' },
     },
 }

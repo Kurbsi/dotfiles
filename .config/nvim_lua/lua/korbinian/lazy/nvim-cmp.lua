@@ -1,14 +1,17 @@
 return {
     "hrsh7th/nvim-cmp",
+    enabled = false,
     dependencies = {
+        "neovim/nvim-lspconfig",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
         "L3MON4D3/LuaSnip",
         "saadparwaiz1/cmp_luasnip",
+        "chrisgrieser/cmp-nerdfont",
     },
-    config = function ()
+    config = function()
         local cmp = require("cmp")
         local luasnip = require("luasnip")
         cmp.setup({
@@ -41,11 +44,28 @@ return {
                 end, { 'i', 's' }),
             },
             sources = cmp.config.sources({
-                { name = 'luasnip' },
-                { name = 'nvim-lsp' },
-            }, {
-                { name = 'buffer' }
+                { name = 'nvim_lsp', group_index = 1 },
+                { name = 'luasnip', group_index = 1 },
+                { name = 'buffer', group_index = 2 },
+                { name = 'nerdfont', group_index = 1 },
             })
+        })
+
+        cmp.setup.cmdline({ '/', '?' }, {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = {
+                { name = 'buffer' }
+            }
+        })
+
+        cmp.setup.cmdline(':', {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = cmp.config.sources({
+                { name = 'path' }
+            }, {
+                { name = 'cmdline' }
+            }),
+            matching = { disallow_symbol_nonprefix_matching = false }
         })
     end
 }
