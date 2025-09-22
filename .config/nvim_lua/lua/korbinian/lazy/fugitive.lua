@@ -15,7 +15,10 @@ return {
         { "<leader>gx",  ":GBrowse<cr>",                                                      desc = "Browse to current file" },
         { "<leader>gp",  function() vim.cmd.Git('push') end,                                  desc = "Git push" },
         { "<leader>gf",  function() vim.cmd.Git('push -f') end,                               desc = "Git push --force" },
-        { "<leader>pu",  function() vim.cmd.Git('pull --rebase') end,                         desc = "Git pull --rebase" },
+        { "<leader>gu",  function() vim.cmd.Git('pull --rebase') end,                         desc = "Git pull --rebase" },
+        { "<leader>gbl", function() vim.cmd.Git('blame') end,                                 desc = "Git blame" },
+        { "<leader>gt",  function() vim.cmd.Git('stash') end,                                 desc = "Git stash" },
+        { "<leader>gtp", function() vim.cmd.Git('stash pop') end,                             desc = "Git stash pop" },
         -- NOTE: It allows me to easily set the branch i am pushing and any tracking needed if i did not set the branch up correctly
         { "<leader>t",   ":Git push -u origin ",                                              ft = "fugitive",                                  desc = "Git push -u origin" },
     },

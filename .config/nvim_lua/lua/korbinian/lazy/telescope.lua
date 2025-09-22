@@ -11,7 +11,7 @@ return {
     config = function()
         require('telescope').setup {
             defaults = {
-                path_display = { shorten = { len = 3 } },
+                path_display = { shorten = { len = 3, exclude = { 2, -1 } } },
             },
             extensions = {
                 fzf = {}

@@ -41,7 +41,8 @@ vim.opt.splitright = true
 
 vim.opt.cursorline = true
 
-vim.opt.clipboard = "unnamedplus"
+vim.opt.completeopt = "menu,menuone,noselect,popup"
+
 
 --Lua:
 vim.g.material_style = "palenight"
