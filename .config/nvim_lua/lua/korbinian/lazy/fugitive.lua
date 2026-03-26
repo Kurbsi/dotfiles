@@ -19,6 +19,7 @@ return {
         { "<leader>gbl", function() vim.cmd.Git('blame') end,                                 desc = "Git blame" },
         { "<leader>gt",  function() vim.cmd.Git('stash') end,                                 desc = "Git stash" },
         { "<leader>gtp", function() vim.cmd.Git('stash pop') end,                             desc = "Git stash pop" },
+        { "<leader>gfo", function() vim.cmd.Git('fetch origin') end,                          desc = "Git fetch origin" },
         -- NOTE: It allows me to easily set the branch i am pushing and any tracking needed if i did not set the branch up correctly
         { "<leader>t",   ":Git push -u origin ",                                              ft = "fugitive",                                  desc = "Git push -u origin" },
     },

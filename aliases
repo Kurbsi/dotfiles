@@ -27,9 +27,9 @@ alias cw='date +%V'
 alias xclip='xclip -sel c'
 
 alias soa='cd $HOME/dev/soa-com-middleware'
-alias soa-clean='rm -rf build build-generated'
 alias soa-exec='docker compose exec motionwise-lean'
 alias soa-pipeline='soa-exec ./ci/pipeline_hook.sh'
+alias soa-bz='soa-exec bazelisk'
 alias soa-sh='docker compose exec -it motionwise-lean /bin/bash'
 
 soa-build() {

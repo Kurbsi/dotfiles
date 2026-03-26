@@ -21,27 +21,17 @@ return {
     {
         {
             "github/copilot.vim",
-            version = "v1.42.0",
             event = "VeryLazy",
             config = function()
-                -- For copilot.vim
-                -- enable copilot for specific filetypes
                 vim.g.copilot_filetypes = {
                     ["TelescopePrompt"] = false,
                 }
 
-                -- Set to true to assume that copilot is already mapped
-                vim.g.copilot_assume_mapped = true
-
-                vim.g.copilot_no_tab_map = true
-                vim.keymap.set('i', '<S-Tab>', 'copilot#Accept("\\<S-Tab>")',
+                vim.keymap.set('i', '<S-Tab>', 'copilot#Accept("\\<CR>")',
                     { expr = true, replace_keycodes = false, silent = true, desc = "Accept Copilot suggestion" })
+                vim.g.copilot_no_tab_map = true
 
-
-                -- Set workspace folders
-                -- vim.g.copilot_workspace_folders = "~/Projects"
-
-                -- Setup keymaps
+                -- Setup keymaps for copilot.vim
                 -- local keymap = vim.keymap.set
                 -- local opts = { silent = true }
                 --
@@ -64,6 +54,7 @@ return {
     {
         "CopilotC-Nvim/CopilotChat.nvim",
         dependencies = {
+            { "github/copilot.vim", },                             -- require copilot.vim
             { "nvim-lua/plenary.nvim",        branch = "master" }, -- for curl, log and async functions
             { "nvim-telescope/telescope.nvim" },                   -- Use telescope for help actions
         },
@@ -81,12 +72,12 @@ return {
             },
             separator = '━━',
             prompts = prompts,
-            model = "claude-3.7-sonnet",
+            model = "claude-sonnet-4.5",
             mappings = {
                 -- Use tab for completion
                 complete = {
-                    detail = "Use @<Tab> or /<Tab> for options.",
-                    insert = "<Tab>",
+                    detail = "Use @<S-Tab> or /<S-Tab> for options.",
+                    insert = "<S-Tab>",
                 },
                 -- Close the chat
                 close = {
@@ -118,28 +109,8 @@ return {
             local chat = require("CopilotChat")
             chat.setup(opts)
 
-            local select = require("CopilotChat.select")
             vim.api.nvim_create_user_command("CopilotChatVisual", function(args)
-                chat.ask(args.args, { selection = select.visual })
-            end, { nargs = "*", range = true })
-
-            -- Inline chat with Copilot
-            vim.api.nvim_create_user_command("CopilotChatInline", function(args)
-                chat.ask(args.args, {
-                    selection = select.visual,
-                    window = {
-                        layout = "float",
-                        relative = "cursor",
-                        width = 1,
-                        height = 0.4,
-                        row = 1,
-                    },
-                })
-            end, { nargs = "*", range = true })
-
-            -- Restore CopilotChatBuffer
-            vim.api.nvim_create_user_command("CopilotChatBuffer", function(args)
-                chat.ask(args.args, { selection = select.buffer })
+                chat.ask(args.args, { resources = "selection" })
             end, { nargs = "*", range = true })
 
             -- Custom buffer for CopilotChat
@@ -163,7 +134,7 @@ return {
                 function()
                     local input = vim.fn.input("Ask Copilot: ")
                     if input ~= "" then
-                        vim.cmd("CopilotChat " .. input)
+                        vim.cmd("CopilotChat" .. input)
                     end
                 end,
                 desc = "CopilotChat - Ask input",
@@ -191,7 +162,6 @@ return {
             { "<leader>aq",        "<cmd>CopilotChatClose<cr>",         desc = "CopilotChat - Close chat" },
             { "<leader>a<leader>", "<cmd>CopilotChatToggle<cr>",        desc = "CopilotChat - Toggle chat" },
             { "<leader>av",        ":CopilotChatVisual ",               mode = "x",                           desc = "CopilotChat - Open in vertical split", },
-            { "<leader>ax",        ":CopilotChatInline ",               mode = "x",                           desc = "CopilotChat - Inline chat", },
         },
     },
 }
