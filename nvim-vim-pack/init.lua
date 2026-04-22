@@ -1,5 +1,6 @@
 require('remap')
 require('set')
+require('tttech')
 
 vim.api.nvim_create_autocmd('PackChanged', {
     callback = function(ev)
@@ -21,13 +22,14 @@ vim.pack.add({
     'https://github.com/BurntSushi/ripgrep',
     'https://github.com/nvim-telescope/telescope-fzf-native.nvim',
     { src = 'https://github.com/nvim-telescope/telescope.nvim', version = 'v0.2.1' },
-    'https://github.com/nvim-treesitter/nvim-treesitter',
+    'https://github.com/romus204/tree-sitter-manager.nvim',
     { src = 'https://github.com/ThePrimeagen/harpoon',          version = 'harpoon2' },
     'https://github.com/stevearc/oil.nvim',
     'https://github.com/mason-org/mason.nvim',
     'https://github.com/neovim/nvim-lspconfig',
     'https://github.com/nvim-mini/mini.surround',
     { src = 'https://github.com/saghen/blink.cmp', version = 'v1' },
+    'https://github.com/rachartier/tiny-inline-diagnostic.nvim',
 })
 
 --  look & feel
@@ -40,6 +42,13 @@ require('lualine').setup {
 
 -- Git
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = 'Git status' })
+vim.keymap.set('n', '<leader>gco', ':G checkout ', { desc = 'Git checkout' })
+vim.keymap.set('n', '<leader>gp', function() vim.cmd.Git('push') end, { desc = 'Git push' })
+vim.keymap.set('n', '<leader>gf', function() vim.cmd.Git('push -f') end, { desc = 'Git push --force' })
+vim.keymap.set('n', '<leader>gu', function() vim.cmd.Git('pull --rebase') end, { desc = 'Git pull --rebase' })
+vim.keymap.set('n', '<leader>gbl', function() vim.cmd.Git('blame') end, { desc = 'Git blame' })
+vim.keymap.set('n', "<leader>gl", function() vim.cmd.Git('log --graph --oneline --abbrev-commit') end,
+    { desc = "Git lol" })
 
 -- Telescope
 require('telescope').setup {
@@ -55,20 +64,34 @@ require('telescope').load_extension('fzf')
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<C-p>', builtin.git_files, { desc = 'Telescope find git files' })
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
-vim.keymap.set('n', '<leader>fw', builtin.grep_string, { desc = 'Telescope find word under cursor' })
-vim.keymap.set('n',
-    '<leader>fs',
-    function()
-        builtin.grep_string({ search = vim.fn.input("Grep > ") })
-    end,
-    { desc = 'Telescope find word under cursor' }
-)
+vim.keymap.set({ 'n', 'v' }, '<leader>fw', builtin.grep_string, { desc = 'Telescope find word under cursor' })
+vim.keymap.set('n', '<leader>frr', builtin.lsp_references, { desc = 'Telescope find references' })
+vim.keymap.set('n', '<leader>fs', builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>fgb', builtin.git_branches, { desc = 'Telescope show git branches' })
+vim.keymap.set('n', "<leader>fS", function()
+        vim.ui.input({ prompt = "Exclude direcories: " },
+            function(input)
+                if not input or input == "" then
+                    return
+                end
 
--- Treesitter
-require('nvim-treesitter').install { 'lua', 'cpp', 'markdown', 'python', 'cmake' }
+                local dirs = {}
+                for dir in input:gmatch("%S+") do
+                    table.insert(dirs, '--glob=!**/' .. dir .. '/**')
+                end
+
+                require('telescope.builtin').live_grep({
+                    prompt_title = 'Excluding: ' .. table.concat(dirs, ', '),
+                    additional_args = dirs
+                })
+            end)
+    end,
+    { desc = 'Telescope find word while excluding direcories' })
+
+-- tree-sitter-manager
+require('tree-sitter-manager').setup({})
 
 -- Harpoon
 local harpoon = require("harpoon")
@@ -159,9 +182,10 @@ vim.lsp.config('lua_ls', {
     },
 })
 
-vim.lsp.enable({ 'clangd', 'cmake', 'lua_ls' })
+vim.lsp.enable({ 'clangd', 'cmake', 'lua_ls', 'bashls', 'pylsp' })
 
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
+vim.keymap.set("n", "gh", "<cmd>LspClangdSwitchSourceHeader<CR>", { desc = "Switch between header/source" })
 
 -- Mini.Sourround
 require('mini.surround').setup()
@@ -176,6 +200,13 @@ require('blink.cmp').setup({
         keyword = { range = 'prefix' },
         ghost_text = { enabled = true },
         list = { selection = { preselect = true, auto_insert = true } },
+        menu = {
+            draw = {
+                columns = {
+                    { 'kind_icon' }, { 'label', 'label_description', gap = 1 }, { 'source_name' },
+                },
+            },
+        },
     },
     fuzzy = { implementation = 'lua' },
     keymap = {
@@ -184,3 +215,7 @@ require('blink.cmp').setup({
         ['<C-d>'] = { 'scroll_signature_down', 'fallback' },
     }
 })
+
+-- tiny-inline-diagnostic
+require("tiny-inline-diagnostic").setup()
+vim.diagnostic.config({ virtual_text = false })

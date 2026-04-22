@@ -3,13 +3,11 @@
 --set wildmenu
 --set wildmode=longest,list,full
 --set colorcolumn=120
---set cursorline
 --set hidden
 --set noerrorbells
 --set nobackup
 --set nowritebackup
 --set clipboard+=unnamedplus
---set completeopt=menu,menuone,noselect
 
 
 vim.opt.nu = true

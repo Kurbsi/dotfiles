@@ -40,3 +40,8 @@ vim.keymap.set("n", "<leader>o", ":update<CR> :source<CR>")
 vim.keymap.set("n", "<leader>x", ":update<CR> :make<CR>")
 
 vim.keymap.set("n", "bt", "<C-^>", { noremap = true, desc = "Go back to previous buffer" })
+
+vim.keymap.set('n', 'gK', function()
+    local new_config = not vim.diagnostic.config().virtual_lines
+    vim.diagnostic.config({ virtual_lines = new_config })
+end, { desc = 'Toggle diagnostic virtual_lines' })
